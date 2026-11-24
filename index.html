@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>¿Entrenas o Improvisas? — Centro de Producción</title>
+  <meta name="theme-color" content="#0d0f12" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Entrenas o Improvisas" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230d0f12'/%3E%3Crect x='4' y='4' width='56' height='56' rx='10' fill='none' stroke='%23eab308' stroke-width='3'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' fill='%23eab308' font-family='Arial,sans-serif' font-weight='900' font-size='28'%3EEI%3C/text%3E%3C/svg%3E" />
+  <style>
+    :root {
+      --bg: #0d0f12;
+      --surface: #151920;
+      --surface-2: #1c222c;
+      --border: #272f3d;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --accent: #eab308;
+      --accent-dim: rgba(234, 179, 8, 0.14);
+      --green: #22c55e;
+      --green-dim: rgba(34, 197, 94, 0.14);
+      --blue: #38bdf8;
+      --blue-dim: rgba(56, 189, 248, 0.14);
+      --red: #ef4444;
+      --red-dim: rgba(239, 68, 68, 0.14);
+      --radius: 12px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+      padding-bottom: 60px;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      background: rgba(13, 15, 18, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 20px;
+    }
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .brand h1 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .brand h1 span { color: var(--accent); }
+    .brand p {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    .nav-tabs {
+      display: flex;
+      gap: 6px;
+      background: var(--surface);
+      padding: 4px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+    .nav-tab {
+      background: transparent;
+      color: var(--muted);
+      border: none;
+      padding: 7px 13px;
+      border-radius: 7px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .nav-tab.active {
+      background: var(--accent);
+      color: #0d0f12;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+    .kpi-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+    }
+    .kpi-label {
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .kpi-value {
+      font-size: 1.55rem;
+      font-weight: 800;
+      margin-top: 4px;
+      color: var(--text);
+    }
+    .kpi-sub {
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    .progress-bar-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      margin-bottom: 20px;
+    }
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .progress-track {
+      height: 8px;
+      background: var(--surface-2);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), #facc15);
+      border-radius: 99px;
+      transition: width 0.3s ease;
+    }
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    select, input[type="text"], input[type="date"], textarea {
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 0.85rem;
+      font-family: inherit;
+    }
+    select:focus, input:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    .btn {
+      background: var(--surface-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s;
+    }
+    .btn:hover { border-color: var(--accent); }
+    .btn-primary {
+      background: var(--accent);
+      color: #0d0f12;
+      border-color: var(--accent);
+    }
+    .btn-primary:hover { filter: brightness(1.08); }
+    .btn-sm { padding: 5px 10px; font-size: 0.76rem; }
+    .block-section { margin-bottom: 24px; }
+    .block-title {
+      font-size: 0.84rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--accent);
+      font-weight: 700;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .block-title::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    .ep-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+      gap: 12px;
+    }
+    .ep-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 15px;
+      cursor: pointer;
+      transition: transform 0.12s, border-color 0.15s;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .ep-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+    .ep-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+    }
+    .ep-num {
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: var(--accent-dim);
+      color: var(--accent);
+      white-space: nowrap;
+    }
+    .ep-date {
+      font-size: 0.74rem;
+      color: var(--muted);
+    }
+    .ep-title {
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .ep-focus {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    .ep-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: auto;
+      padding-top: 4px;
+    }
+    .badge {
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: var(--surface-2);
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+    .badge.done {
+      background: var(--green-dim);
+      color: var(--green);
+      border-color: rgba(34, 197, 94, 0.35);
+    }
+    .view-section { display: none; }
+    .view-section.active { display: block; }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.78);
+      backdrop-filter: blur(4px);
+      z-index: 50;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      width: 100%;
+      max-width: 860px;
+      max-height: 92vh;
+      overflow-y: auto;
+      padding: 22px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 14px;
+      margin-bottom: 16px;
+    }
+    .modal-header h2 { font-size: 1.15rem; font-weight: 800; }
+    .close-btn {
+      background: var(--surface-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1.1rem;
+    }
+    .status-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 12px;
+      border-radius: 10px;
+      margin-bottom: 16px;
+      align-items: center;
+    }
+    .check-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 5px 10px;
+      border-radius: 7px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+    }
+    .check-pill input { accent-color: var(--accent); width: 15px; height: 15px; }
+    .metrics-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 10px 14px;
+      border-radius: 10px;
+      margin-bottom: 16px;
+      font-size: 0.82rem;
+    }
+    .dur-pill {
+      padding: 4px 10px;
+      border-radius: 99px;
+      font-weight: 700;
+      font-size: 0.78rem;
+    }
+    .dur-ok { background: var(--green-dim); color: var(--green); }
+    .dur-warn { background: var(--accent-dim); color: var(--accent); }
+    .dur-bad { background: var(--red-dim); color: var(--red); }
+    .field-group { margin-bottom: 14px; }
+    .field-group label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .field-group label span { color: var(--accent); font-weight: 600; }
+    .field-group textarea, .field-group input[type="text"] {
+      width: 100%;
+      resize: vertical;
+    }
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 680px) {
+      .two-col { grid-template-columns: 1fr; }
+    }
+    .card-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+    .card-panel h3 {
+      font-size: 1rem;
+      margin-bottom: 10px;
+      color: var(--accent);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      margin-top: 8px;
+    }
+    th, td {
+      text-align: left;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    th {
+      color: var(--muted);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--accent);
+      color: #0d0f12;
+      font-weight: 700;
+      font-size: 0.84rem;
+      padding: 10px 16px;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(10px);
+      transition: all 0.2s;
+      z-index: 100;
+    }
+    .toast.show { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <div class="brand">
+        <h1><span>¿ENTRENAS</span> O IMPROVISAS?</h1>
+        <p>Centro de Producción · YouTube Shorts (18 Episodios)</p>
+      </div>
+      <nav class="nav-tabs">
+        <button class="nav-tab active" data-view="episodes">Episodios</button>
+        <button class="nav-tab" data-view="schedule">Calendario</button>
+        <button class="nav-tab" data-view="bible">Biblia</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- KPIs -->
+    <section class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Guiones Listos</div>
+        <div class="kpi-value" id="kpi-script">0 / 18</div>
+        <div class="kpi-sub">Estructura 60–75s</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Locuciones</div>
+        <div class="kpi-value" id="kpi-voice">0 / 18</div>
+        <div class="kpi-sub">Audio limpio</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Motion Graphics</div>
+        <div class="kpi-value" id="kpi-motion">0 / 18</div>
+        <div class="kpi-sub">9:16 Alta Calidad</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Publicados</div>
+        <div class="kpi-value" id="kpi-published">0 / 18</div>
+        <div class="kpi-sub">En YouTube Shorts</div>
+      </div>
+    </section>
+
+    <section class="progress-bar-wrap">
+      <div class="progress-header">
+        <span>Progreso Global de la Temporada</span>
+        <span id="global-pct">0%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="global-bar" style="width: 0%"></div>
+      </div>
+    </section>
+
+    <!-- VIEW: EPISODES -->
+    <section id="view-episodes" class="view-section active">
+      <div class="toolbar">
+        <div class="filters">
+          <select id="filter-block">
+            <option value="all">Todos los Bloques</option>
+            <option value="1">Bloque 1: Splits Fundamentales</option>
+            <option value="2">Bloque 2: Splits Especializados</option>
+            <option value="3">Bloque 3: Sistemas de Progresión</option>
+            <option value="4">Bloque 4: Técnicas de Intensidad</option>
+            <option value="5">Bloque 5: Cierre de Temporada</option>
+          </select>
+          <select id="filter-status">
+            <option value="all">Todos los Estados</option>
+            <option value="pending">Pendientes</option>
+            <option value="inprogress">En Producción</option>
+            <option value="published">Publicados</option>
+          </select>
+        </div>
+        <div class="filters">
+          <button class="btn" id="btn-export-md">Exportar .MD</button>
+          <button class="btn" id="btn-export-json">Respaldo JSON</button>
+          <label class="btn" style="cursor:pointer;">
+            Importar JSON
+            <input type="file" id="input-import-json" accept=".json" style="display:none;" />
+          </label>
+        </div>
+      </div>
+      <div id="episodes-container"></div>
+    </section>
+
+    <!-- VIEW: SCHEDULE -->
+    <section id="view-schedule" class="view-section">
+      <div class="card-panel">
+        <h3>Generador Automático de Calendario</h3>
+        <p style="font-size:0.85rem; color:var(--muted); margin-bottom:14px;">
+          Programa tus 18 Shorts automáticamente dejando espacio de 48h para que el algoritmo pruebe cada video sin competir entre sí.
+        </p>
+        <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:flex-end;">
+          <div>
+            <label style="display:block; font-size:0.75rem; color:var(--muted); margin-bottom:4px;">Fecha de estreno (Ep. 01)</label>
+            <input type="date" id="sched-start" />
+          </div>
+          <div>
+            <label style="display:block; font-size:0.75rem; color:var(--muted); margin-bottom:4px;">Frecuencia</label>
+            <select id="sched-freq">
+              <option value="3">3 Shorts / semana (Lun · Mié · Vie)</option>
+              <option value="2">2 Shorts / semana (Mar · Vie)</option>
+            </select>
+          </div>
+          <button class="btn btn-primary" id="btn-gen-sched">Generar Fechas</button>
+        </div>
+      </div>
+      <div class="card-panel">
+        <h3>Cronograma de Publicación</h3>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>Ep.</th>
+                <th>Título</th>
+                <th>Fecha</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody id="schedule-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW: BIBLE -->
+    <section id="view-bible" class="view-section">
+      <div class="card-panel">
+        <h3>Identidad de la Serie</h3>
+        <p style="margin-bottom:8px;"><strong>Nombre:</strong> ¿Entrenas o Improvisas?</p>
+        <p style="margin-bottom:8px;"><strong>Frase de cierre obligatoria:</strong> <span style="color:var(--accent); font-weight:700;">"En el entrenamiento, la calidad no se improvisa."</span></p>
+        <p style="color:var(--muted); font-size:0.86rem;"><strong>Objetivo:</strong> Enseñar a principiantes y veteranos que entrenan sin método cómo elegir y combinar su estructura semanal, su sistema de progresión y sus técnicas de intensidad con criterio.</p>
+      </div>
+
+      <div class="card-panel">
+        <h3>Las 3 Capas del Entrenamiento</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Capa</th>
+              <th>Qué define</th>
+              <th>Ejemplos</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>1. El Contenedor (Splits)</strong></td>
+              <td>Cómo divides los músculos en la semana</td>
+              <td>Full Body, Torso/Pierna, PPL, Weider, Arnold</td>
+            </tr>
+            <tr>
+              <td><strong>2. El Motor (Métodos)</strong></td>
+              <td>Cómo subes peso y repeticiones</td>
+              <td>5x5, Bilbo, 5/3/1, PHUL/PHAT, Heavy Duty, GVT</td>
+            </tr>
+            <tr>
+              <td><strong>3. El Acelerador (Técnicas)</strong></td>
+              <td>Cómo exprimes una serie puntual al final</td>
+              <td>Drop Sets, Rest-Pause, Myo-Reps, Superseries</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card-panel">
+        <h3>Plantilla Fija de Guion (65 – 75 segundos)</h3>
+        <table>
+          <thead>
+            <tr><th>Tiempo</th><th>Sección</th><th>Propósito</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>0:00 – 0:06</td><td><strong>Gancho</strong></td><td>Error común o verdad incómoda para frenar el scroll</td></tr>
+            <tr><td>0:06 – 0:25</td><td><strong>Qué es</strong></td><td>Explicación clara y visual sin relleno</td></tr>
+            <tr><td>0:25 – 0:50</td><td><strong>Lo bueno y lo malo</strong></td><td>2–3 ventajas reales y el error típico o contra</td></tr>
+            <tr><td>0:50 – 1:05</td><td><strong>Veredicto</strong></td><td>Para quién sí funciona y para quién no</td></tr>
+            <tr><td>1:05 – 1:12</td><td><strong>Cierre</strong></td><td>Adelanto del próximo episodio + frase de cierre</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- EPISODE MODAL -->
+  <div class="modal-backdrop" id="ep-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <div>
+          <span class="ep-num" id="m-num">EP 01</span>
+          <h2 id="m-title" style="margin-top:6px;">Título del Episodio</h2>
+          <p id="m-focus" style="font-size:0.82rem; color:var(--muted); margin-top:2px;"></p>
+        </div>
+        <button class="close-btn" id="m-close">&times;</button>
+      </div>
+
+      <div class="status-row">
+        <label class="check-pill"><input type="checkbox" id="m-s-script" /> Guion</label>
+        <label class="check-pill"><input type="checkbox" id="m-s-voice" /> Voz</label>
+        <label class="check-pill"><input type="checkbox" id="m-s-motion" /> Motion Graphics</label>
+        <label class="check-pill"><input type="checkbox" id="m-s-pub" /> Publicado</label>
+        <div style="margin-left:auto; display:flex; align-items:center; gap:6px;">
+          <span style="font-size:0.76rem; color:var(--muted);">Publicación:</span>
+          <input type="date" id="m-date" />
+        </div>
+      </div>
+
+      <div class="metrics-bar">
+        <div>
+          <strong>Palabras:</strong> <span id="m-words">0</span> &nbsp;|&nbsp;
+          <strong>Duración est. (~160 ppm):</strong> <span id="m-dur-text">0s</span>
+          <span id="m-dur-badge" class="dur-pill dur-warn" style="margin-left:8px;">Objetivo: 60–75s</span>
+        </div>
+        <button class="btn btn-primary btn-sm" id="btn-copy-voice">Copiar texto limpio para locución</button>
+      </div>
+
+      <div class="field-group">
+        <label>1. Gancho <span>0:00 – 0:06</span></label>
+        <textarea id="m-hook" rows="2" placeholder="Frase directa para frenar el scroll..."></textarea>
+      </div>
+      <div class="field-group">
+        <label>2. Qué es / Cómo funciona <span>0:06 – 0:25</span></label>
+        <textarea id="m-what" rows="3" placeholder="Explicación directa y visual..."></textarea>
+      </div>
+      <div class="field-group">
+        <label>3. Lo bueno y lo malo <span>0:25 – 0:50</span></label>
+        <textarea id="m-proscons" rows="3" placeholder="Ventajas reales y errores comunes o contras..."></textarea>
+      </div>
+      <div class="field-group">
+        <label>4. Veredicto (¿Para quién es?) <span>0:50 – 1:05</span></label>
+        <textarea id="m-verdict" rows="2" placeholder="Para quién sí sirve y quién debería evitarlo..."></textarea>
+      </div>
+      <div class="field-group">
+        <label>5. Cierre + Frase Firma <span>1:05 – 1:12</span></label>
+        <textarea id="m-outro" rows="2" placeholder="Adelanto del siguiente capítulo + En el entrenamiento, la calidad no se improvisa."></textarea>
+      </div>
+
+      <div class="field-group">
+        <label>Storyboard / Indicaciones de Motion Graphics <span>9:16</span></label>
+        <textarea id="m-storyboard" rows="4" placeholder="Escena 1: ...&#10;Escena 2: ..."></textarea>
+      </div>
+
+      <div class="two-col">
+        <div class="field-group">
+          <label>Título YouTube Shorts</label>
+          <input type="text" id="m-yt-title" placeholder="Ej. Ep. 01 | ¿Entrenas o Improvisas?" />
+        </div>
+        <div class="field-group">
+          <label>Comentario Fijado</label>
+          <input type="text" id="m-yt-comment" placeholder="Pregunta para disparar comentarios..." />
+        </div>
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:10px;">
+        <button class="btn" id="m-cancel">Cerrar</button>
+        <button class="btn btn-primary" id="m-save">Guardar Cambios</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Guardado</div>
+
+  <script>
+    const STORAGE_KEY = "eoi_production_hub_v1";
+
+    const BLOCK_NAMES = {
+      1: "Bloque 1 · Las bases y los splits fundamentales (El Contenedor)",
+      2: "Bloque 2 · Splits especializados",
+      3: "Bloque 3 · Sistemas de progresión y metodologías (El Motor)",
+      4: "Bloque 4 · Técnicas de intensidad (El Acelerador)",
+      5: "Bloque 5 · Cierre de temporada"
+    };
+
+    const INITIAL_EPISODES = [
+      {
+        id: 1, block: 1,
+        title: "Piloto: ¿Qué es un Split, un Método y una Técnica?",
+        focus: "Las 3 capas del entrenamiento: Contenedor, Motor y Acelerador.",
+        status: { script: true, voice: false, motion: false, published: false },
+        date: "",
+        hook: "Llevas meses yendo al gimnasio, sudas, cargas pesado… pero tu físico sigue igual. El problema no es tu esfuerzo, es que estás improvisando.",
+        what: "La mayoría mezcla todo: le dicen método a una rutina Weider y creen que hacer Drop Sets es un plan de entrenamiento. Hoy arrancamos ¿Entrenas o Improvisas? poniendo orden con las tres capas del entrenamiento. Capa uno: el Split. Es el contenedor. Define únicamente cómo divides tus músculos en la semana: Full Body, Torso-Pierna o Empuje-Jalón-Pierna. Por sí solo no te hace progresar, solo le da orden a tu calendario.",
+        proscons: "Capa dos: el Método. Es el motor. Te dice exactamente cómo subir peso y repeticiones para volverte más fuerte, como el 5x5, el método Bilbo o el Heavy Duty. Sin motor, simplemente te estancas. Capa tres: las Técnicas de Intensidad. Son el acelerador, como los Drop Sets o el Rest-Pause. Sirven para exprimir una serie puntual al final, nunca para construir toda tu rutina sobre ellas.",
+        verdict: "Cuando entiendes qué pieza va en cada lugar, dejas de perder el tiempo y cada sesión empieza a sumar resultados reales.",
+        outro: "Guarda esta serie porque en el próximo episodio analizamos el Full Body. Recuerda: en el entrenamiento, la calidad no se improvisa.",
+        storyboard: "[0:00-0:06] Texto grande centrado: ¿ENTRENAS O IMPROVISAS? con corte rítmico.\n[0:06-0:18] Aparecen 3 bloques apilados en pantalla: SPLIT / MÉTODO / TÉCNICA.\n[0:18-0:33] Se ilumina base: 1. EL CONTENEDOR (SPLIT) + calendario semanal.\n[0:33-0:47] Se ilumina centro: 2. EL MOTOR (MÉTODO) + gráfica subiendo (5x5, Bilbo, Heavy Duty).\n[0:47-0:59] Se ilumina cima: 3. EL ACELERADOR (TÉCNICAS) + icono rayo (Drop Sets, Rest-Pause).\n[0:59-1:10] Resumen de 3 capas + tarjeta final: EPISODIO 2: FULL BODY.",
+        ytTitle: "Ep. 01 | ¿Entrenas o Improvisas? Split vs Método vs Técnica #gym #entrenamiento",
+        ytComment: "¿Tú sigues un sistema claro o entrenas según cómo te sientes ese día? Te leo 👇"
+      },
+      { id: 2, block: 1, title: "Full Body (Cuerpo Completo)", focus: "2 a 3 días por semana. Ideal para principiantes, agendas llenas o atletas de otro deporte." },
+      { id: 3, block: 1, title: "Torso / Pierna (Upper / Lower)", focus: "Estándar de oro para 4 días. Gran balance entre frecuencia 2 y recuperación." },
+      { id: 4, block: 1, title: "Empuje / Jalón / Pierna (Push / Pull / Legs)", focus: "División por patrones de movimiento. Muy eficiente, pero exige 6 días para frecuencia 2 real." },
+      { id: 5, block: 1, title: "Método Weider (Bro Split)", focus: "Un grupo muscular por día. Enfoque mental y bombeo alto vs. riesgo de volumen basura y baja frecuencia." },
+      { id: 6, block: 2, title: "Arnold Split (Pecho-Espalda / Hombro-Brazo / Pierna)", focus: "Prioridad a brazos y hombros mediante trabajo antagónico. Alta demanda de recuperación." },
+      { id: 7, block: 2, title: "Splits Híbridos de 5 días (PPL + Torso/Pierna)", focus: "La solución inteligente para quienes entrenan 5 días sin desequilibrar la semana." },
+      { id: 8, block: 3, title: "Método 5x5 (StrongLifts / Reg Park)", focus: "Progresión lineal simple en básicos. Ideal para fuerza base; se estanca rápido en intermedios." },
+      { id: 9, block: 3, title: "Método Bilbo", focus: "Serie inicial explosiva al máximo de reps sin fallo técnico + hipertrofia. Rompe estancamientos en básicos." },
+      { id: 10, block: 3, title: "Método 5/3/1 (Jim Wendler)", focus: "Progresión por porcentajes en ciclos de 4 semanas. Sostenible a largo plazo y compatible con otros deportes." },
+      { id: 11, block: 3, title: "PHUL y PHAT (Fuerza + Hipertrofia)", focus: "Combina días pesados de bajas repeticiones con días de mayor volumen en la misma semana." },
+      { id: 12, block: 3, title: "Heavy Duty / HIT", focus: "Alta intensidad al fallo absoluto y bajo volumen. Sesiones cortas, no ideal para novatos sin técnica." },
+      { id: 13, block: 3, title: "Entrenamiento Alemán de Volumen (GVT - 10x10)", focus: "10 series de 10 reps en básicos. Fase corta de choque, insostenible a largo plazo." },
+      { id: 14, block: 3, title: "Entrenamiento Híbrido / Concurrente", focus: "Cómo estructurar fuerza y resistencia en la misma semana minimizando el efecto de interferencia." },
+      { id: 15, block: 4, title: "Drop Sets (Series Descendentes)", focus: "Llegar al fallo, bajar peso y seguir. Ahorro de tiempo y estrés metabólico; no abusar en básicos." },
+      { id: 16, block: 4, title: "Rest-Pause y Myo-Reps", focus: "Micropausas de 10 a 20s para exprimir repeticiones efectivas cuidando mejor la técnica." },
+      { id: 17, block: 4, title: "Superseries, Biseries y Series Gigantes", focus: "Cuándo combinar antagonistas para ahorrar tiempo y cuándo evitar combinar el mismo músculo." },
+      { id: 18, block: 5, title: "El Mapa Definitivo: Arma tu semana sin improvisar", focus: "Cómo combinar tu split, tu método y tus técnicas según tus días disponibles y objetivo." }
+    ].map(ep => ({
+      status: { script: false, voice: false, motion: false, published: false },
+      date: "",
+      hook: "",
+      what: "",
+      proscons: "",
+      verdict: "",
+      outro: "Recuerda: en el entrenamiento, la calidad no se improvisa.",
+      storyboard: "",
+      ytTitle: `Ep. ${String(ep.id).padStart(2, "0")} | ${ep.title} — ¿Entrenas o Improvisas?`,
+      ytComment: "",
+      ...ep
+    }));
+
+    let episodes = loadData();
+    let currentEpId = null;
+
+    function loadData() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (Array.isArray(parsed) && parsed.length === 18) return parsed;
+        }
+      } catch (e) {}
+      return JSON.parse(JSON.stringify(INITIAL_EPISODES));
+    }
+
+    function saveData() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(episodes));
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 2200);
+    }
+
+    function updateKPIs() {
+      const counts = { script: 0, voice: 0, motion: 0, published: 0 };
+      let totalSteps = 0;
+      episodes.forEach(ep => {
+        if (ep.status.script) { counts.script++; totalSteps++; }
+        if (ep.status.voice) { counts.voice++; totalSteps++; }
+        if (ep.status.motion) { counts.motion++; totalSteps++; }
+        if (ep.status.published) { counts.published++; totalSteps++; }
+      });
+      document.getElementById("kpi-script").textContent = `${counts.script} / 18`;
+      document.getElementById("kpi-voice").textContent = `${counts.voice} / 18`;
+      document.getElementById("kpi-motion").textContent = `${counts.motion} / 18`;
+      document.getElementById("kpi-published").textContent = `${counts.published} / 18`;
+      const pct = Math.round((totalSteps / (18 * 4)) * 100);
+      document.getElementById("global-pct").textContent = `${pct}%`;
+      document.getElementById("global-bar").style.width = `${pct}%`;
+    }
+
+    function getEpState(ep) {
+      if (ep.status.published) return "published";
+      if (ep.status.script || ep.status.voice || ep.status.motion) return "inprogress";
+      return "pending";
+    }
+
+    function renderEpisodes() {
+      const blockFilter = document.getElementById("filter-block").value;
+      const statusFilter = document.getElementById("filter-status").value;
+      const container = document.getElementById("episodes-container");
+      container.innerHTML = "";
+
+      [1, 2, 3, 4, 5].forEach(b => {
+        if (blockFilter !== "all" && Number(blockFilter) !== b) return;
+        const list = episodes.filter(ep => ep.block === b && (statusFilter === "all" || getEpState(ep) === statusFilter));
+        if (!list.length) return;
+
+        const sec = document.createElement("div");
+        sec.className = "block-section";
+        sec.innerHTML = `<div class="block-title">${BLOCK_NAMES[b]}</div><div class="ep-grid"></div>`;
+        const grid = sec.querySelector(".ep-grid");
+
+        list.forEach(ep => {
+          const card = document.createElement("div");
+          card.className = "ep-card";
+          card.onclick = () => openModal(ep.id);
+          card.innerHTML = `
+            <div class="ep-top">
+              <span class="ep-num">EP ${String(ep.id).padStart(2, "0")}</span>
+              <span class="ep-date">${ep.date ? ep.date : "Sin fecha"}</span>
+            </div>
+            <div class="ep-title">${ep.title}</div>
+            <div class="ep-focus">${ep.focus}</div>
+            <div class="ep-badges">
+              <span class="badge ${ep.status.script ? "done" : ""}">Guion</span>
+              <span class="badge ${ep.status.voice ? "done" : ""}">Voz</span>
+              <span class="badge ${ep.status.motion ? "done" : ""}">Motion</span>
+              <span class="badge ${ep.status.published ? "done" : ""}">Publicado</span>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+        container.appendChild(sec);
+      });
+    }
+
+    function renderSchedule() {
+      const tbody = document.getElementById("schedule-tbody");
+      tbody.innerHTML = "";
+      episodes.forEach(ep => {
+        const st = getEpState(ep);
+        const stLabel = st === "published" ? "Publicado" : st === "inprogress" ? "En producción" : "Pendiente";
+        const tr = document.createElement("tr");
+        tr.style.cursor = "pointer";
+        tr.onclick = () => openModal(ep.id);
+        tr.innerHTML = `
+          <td><strong>EP ${String(ep.id).padStart(2, "0")}</strong></td>
+          <td>${ep.title}</td>
+          <td>${ep.date || "—"}</td>
+          <td><span class="badge ${st === "published" ? "done" : ""}">${stLabel}</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function calcMetrics() {
+      const text = ["m-hook", "m-what", "m-proscons", "m-verdict", "m-outro"]
+        .map(id => document.getElementById(id).value.trim())
+        .filter(Boolean)
+        .join(" ");
+      const words = text ? text.split(/\s+/).length : 0;
+      const secs = Math.round((words / 160) * 60);
+      document.getElementById("m-words").textContent = words;
+      document.getElementById("m-dur-text").textContent = `${secs}s`;
+      const badge = document.getElementById("m-dur-badge");
+      if (secs >= 60 && secs <= 78) {
+        badge.className = "dur-pill dur-ok";
+        badge.textContent = "Rango ideal (60–75s)";
+      } else if (secs === 0) {
+        badge.className = "dur-pill dur-warn";
+        badge.textContent = "Sin texto aún";
+      } else if (secs < 60) {
+        badge.className = "dur-pill dur-warn";
+        badge.textContent = "Corto (<60s)";
+      } else {
+        badge.className = "dur-pill dur-bad";
+        badge.textContent = "Largo (>78s)";
+      }
+    }
+
+    function openModal(id) {
+      const ep = episodes.find(e => e.id === id);
+      if (!ep) return;
+      currentEpId = id;
+      document.getElementById("m-num").textContent = `EP ${String(ep.id).padStart(2, "0")}`;
+      document.getElementById("m-title").textContent = ep.title;
+      document.getElementById("m-focus").textContent = ep.focus;
+      document.getElementById("m-s-script").checked = ep.status.script;
+      document.getElementById("m-s-voice").checked = ep.status.voice;
+      document.getElementById("m-s-motion").checked = ep.status.motion;
+      document.getElementById("m-s-pub").checked = ep.status.published;
+      document.getElementById("m-date").value = ep.date || "";
+      document.getElementById("m-hook").value = ep.hook || "";
+      document.getElementById("m-what").value = ep.what || "";
+      document.getElementById("m-proscons").value = ep.proscons || "";
+      document.getElementById("m-verdict").value = ep.verdict || "";
+      document.getElementById("m-outro").value = ep.outro || "";
+      document.getElementById("m-storyboard").value = ep.storyboard || "";
+      document.getElementById("m-yt-title").value = ep.ytTitle || "";
+      document.getElementById("m-yt-comment").value = ep.ytComment || "";
+      calcMetrics();
+      document.getElementById("ep-modal").classList.add("open");
+    }
+
+    function closeModal() {
+      document.getElementById("ep-modal").classList.remove("open");
+      currentEpId = null;
+    }
+
+    function saveModal() {
+      const ep = episodes.find(e => e.id === currentEpId);
+      if (!ep) return;
+      ep.status.script = document.getElementById("m-s-script").checked;
+      ep.status.voice = document.getElementById("m-s-voice").checked;
+      ep.status.motion = document.getElementById("m-s-motion").checked;
+      ep.status.published = document.getElementById("m-s-pub").checked;
+      ep.date = document.getElementById("m-date").value;
+      ep.hook = document.getElementById("m-hook").value;
+      ep.what = document.getElementById("m-what").value;
+      ep.proscons = document.getElementById("m-proscons").value;
+      ep.verdict = document.getElementById("m-verdict").value;
+      ep.outro = document.getElementById("m-outro").value;
+      ep.storyboard = document.getElementById("m-storyboard").value;
+      ep.ytTitle = document.getElementById("m-yt-title").value;
+      ep.ytComment = document.getElementById("m-yt-comment").value;
+      saveData();
+      updateKPIs();
+      renderEpisodes();
+      renderSchedule();
+      closeModal();
+      showToast(`Episodio ${String(ep.id).padStart(2, "0")} guardado`);
+    }
+
+    // Events
+    document.querySelectorAll(".nav-tab").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".nav-tab").forEach(b => b.classList.remove("active"));
+        document.querySelectorAll(".view-section").forEach(v => v.classList.remove("active"));
+        btn.classList.add("active");
+        document.getElementById(`view-${btn.dataset.view}`).classList.add("active");
+      });
+    });
+
+    ["m-hook", "m-what", "m-proscons", "m-verdict", "m-outro"].forEach(id => {
+      document.getElementById(id).addEventListener("input", calcMetrics);
+    });
+
+    document.getElementById("m-close").onclick = closeModal;
+    document.getElementById("m-cancel").onclick = closeModal;
+    document.getElementById("m-save").onclick = saveModal;
+    document.getElementById("ep-modal").addEventListener("click", e => {
+      if (e.target.id === "ep-modal") closeModal();
+    });
+
+    document.getElementById("btn-copy-voice").onclick = () => {
+      const text = ["m-hook", "m-what", "m-proscons", "m-verdict", "m-outro"]
+        .map(id => document.getElementById(id).value.trim())
+        .filter(Boolean)
+        .join("\n\n");
+      navigator.clipboard.writeText(text).then(() => showToast("Texto limpio copiado al portapapeles"));
+    };
+
+    document.getElementById("filter-block").onchange = renderEpisodes;
+    document.getElementById("filter-status").onchange = renderEpisodes;
+
+    document.getElementById("btn-gen-sched").onclick = () => {
+      const startVal = document.getElementById("sched-start").value;
+      if (!startVal) { showToast("Elige una fecha de estreno"); return; }
+      const freq = Number(document.getElementById("sched-freq").value);
+      const allowedDays = freq === 3 ? [1, 3, 5] : [2, 5];
+      let d = new Date(startVal + "T12:00:00");
+      episodes.forEach((ep, idx) => {
+        if (idx === 0) {
+          ep.date = d.toISOString().slice(0, 10);
+          return;
+        }
+        do {
+          d.setDate(d.getDate() + 1);
+        } while (!allowedDays.includes(d.getDay()));
+        ep.date = d.toISOString().slice(0, 10);
+      });
+      saveData();
+      renderEpisodes();
+      renderSchedule();
+      showToast("Calendario generado para los 18 episodios");
+    };
+
+    document.getElementById("btn-export-md").onclick = () => {
+      let md = `# ¿Entrenas o Improvisas? — Biblia y Guiones\n\n`;
+      md += `> *"En el entrenamiento, la calidad no se improvisa."*\n\n`;
+      episodes.forEach(ep => {
+        md += `## Ep. ${String(ep.id).padStart(2, "0")}: ${ep.title}\n`;
+        md += `- **Bloque:** ${BLOCK_NAMES[ep.block]}\n`;
+        md += `- **Fecha:** ${ep.date || "Sin definir"}\n`;
+        md += `- **Estado:** Guion(${ep.status.script?"✓":" "}) | Voz(${ep.status.voice?"✓":" "}) | Motion(${ep.status.motion?"✓":" "}) | Publicado(${ep.status.published?"✓":" "})\n\n`;
+        if (ep.hook || ep.what) {
+          md += `### Guion\n${ep.hook}\n\n${ep.what}\n\n${ep.proscons}\n\n${ep.verdict}\n\n${ep.outro}\n\n`;
+        }
+        if (ep.storyboard) md += `### Storyboard\n\`\`\`\n${ep.storyboard}\n\`\`\`\n\n`;
+        md += `---\n\n`;
+      });
+      downloadFile("entrenas-o-improvisas.md", md, "text/markdown");
+    };
+
+    document.getElementById("btn-export-json").onclick = () => {
+      downloadFile("entrenas-o-improvisas-backup.json", JSON.stringify(episodes, null, 2), "application/json");
+    };
+
+    document.getElementById("input-import-json").onchange = e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = ev => {
+        try {
+          const data = JSON.parse(ev.target.result);
+          if (Array.isArray(data) && data.length === 18) {
+            episodes = data;
+            saveData();
+            updateKPIs();
+            renderEpisodes();
+            renderSchedule();
+            showToast("Respaldo importado correctamente");
+          } else {
+            showToast("Archivo JSON no válido");
+          }
+        } catch {
+          showToast("Error al leer el JSON");
+        }
+      };
+      reader.readAsText(file);
+    };
+
+    function downloadFile(filename, content, type) {
+      const blob = new Blob([content], { type });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    // Init
+    document.getElementById("sched-start").value = new Date().toISOString().slice(0, 10);
+    updateKPIs();
+    renderEpisodes();
+    renderSchedule();
+  </script>
+</body>
+</html>
